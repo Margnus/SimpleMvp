@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">SimpleMvp</string>
+    <string name="delete">删除</string>
+
+    <string name="empty_message">暂无数据</string>
+    <string name="loading_message">正在加载中</string>
+    <string name="error_message">Oops! Something wrong happened</string>
+
+    <string name="empty_button">Try again</string>
+    <string name="loading_button">Cancel</string>
+    <string name="error_button">点击重试</string>
+    <string name="error_text_big">糟糕，加载失败～</string>
+    <string name="error_text_little">如您确认网络正常，可尝试修改DNS为114</string>
+    <string name="error_text">查看修改方式</string>
+
+    <string name="film_load_fail_content">视频获取失败</string>
+    <string name="load_fail_content">重新获取</string>
+
+    <!--项目布局文件引用的字符串-->
+    <string name="no_name">佚名</string>
+    <string name="string_rating">评分：</string>
+    <string name="string_rating_num">人评分</string>
+    <string name="string_type">类型：</string>
+    <string name="string_publisher">出版社：</string>
+</resources>

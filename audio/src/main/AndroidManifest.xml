@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.test.audio">
+
+    <application>
+        <activity android:name=".JLayerActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".EncryptionAudioActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".PlayListActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".music.SongListActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".lock.LockActivity"
+            android:screenOrientation="portrait"/>
+        <service
+            android:name=".music.MusicService"
+            android:enabled="true"
+            android:exported="true">
+        </service>
+        <service
+            android:name=".service.AudioPlayService"
+            android:enabled="true"
+            android:exported="true">
+        </service>
+    </application>
+
+</manifest>

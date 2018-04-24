@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/errorView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_white"
+    android:orientation="vertical"
+    android:gravity="center">
+
+  <ImageView
+      android:id="@+id/iv_error"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:scaleType="fitCenter"
+      android:src="@drawable/load_error"/>
+
+  <TextView
+      android:id="@+id/tv_error"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:layout_marginTop="10dp"
+      android:gravity="center"
+      android:text="@string/error_text_big"
+      android:textColor="#FF921B"
+      android:textSize="18sp"
+      />
+
+  <TextView
+      android:id="@+id/btn_retry"
+      android:layout_width="120dp"
+      android:layout_height="40dp"
+      android:layout_marginTop="20dp"
+      android:layout_gravity="center"
+      android:gravity="center"
+      android:background="@drawable/load_error_button_shape"
+      android:singleLine="true"
+      android:text="@string/error_button"
+      android:textColor="#FF921B"
+      android:textSize="16sp" />
+
+</LinearLayout>

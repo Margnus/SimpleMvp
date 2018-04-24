@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <Button
+        android:id="@+id/playButton_encryp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="play" />
+
+    <Button
+        android:id="@+id/stopButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="stop" />
+
+    <Button
+        android:id="@+id/encryptionButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="encryp" />
+
+    <Button
+        android:id="@+id/decryptionButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="decryp" />
+
+    <Button
+        android:id="@+id/toJLayerButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="toJLayer" />
+
+    <Button
+        android:id="@+id/toPlayList"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Play List" />
+
+    <Button
+        android:id="@+id/PlayByServiceList"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Play By Service" />
+</LinearLayout>
