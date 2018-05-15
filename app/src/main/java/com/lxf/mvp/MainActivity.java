@@ -3,8 +3,18 @@ package com.lxf.mvp;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
+import com.google.gson.stream.JsonWriter;
 import com.lxf.mvp.dagger.AppModule;
 import com.lxf.mvp.imageloader.ImageLoader;
 import com.lxf.mvp.utils.ARouterPaths;
@@ -12,6 +22,12 @@ import com.lxf.mvp.utils.PermissionUtil;
 import com.lxf.mvp.utils.ToastUtil;
 import com.hannesdorfmann.mosby3.base.BaseActivity;
 import com.tbruyelle.rxpermissions2.RxPermissions;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.StringReader;
 
 import javax.inject.Inject;
 
@@ -41,6 +57,7 @@ public class MainActivity extends BaseActivity {
         reqPermission();
 
         initView();
+
     }
 
     private void initView() {
@@ -48,6 +65,7 @@ public class MainActivity extends BaseActivity {
 //                .load("https://www.baidu.com/img/bd_logo1.png")
 //                .transformation(ImageLoader.TransformationType.ROUND).into(image);
     }
+
 
     @Override
     protected void injectDependencies() {
@@ -97,7 +115,7 @@ public class MainActivity extends BaseActivity {
 //                "com.tencent.mm.ui.tools.ShareToTimeLineUI", fileImage);
     }
 
-    @OnClick({R.id.textView, R.id.textView2, R.id.textView3})
+    @OnClick({R.id.textView, R.id.textView2, R.id.textView3, R.id.textView4})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.textView:
@@ -108,6 +126,9 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.textView3:
                 ARouter.getInstance().build("/audio/main").navigation();
+                break;
+            case R.id.textView4:
+                ARouter.getInstance().build("/rxjava/demo").navigation();
                 break;
         }
     }

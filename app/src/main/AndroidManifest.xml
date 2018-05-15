@@ -27,6 +27,7 @@
         </activity>
         <activity android:name="com.lxf.mvp.tweet.TweetsListActivity" />
         <activity android:name="com.lxf.mvvm.activity.DbActivity" />
+        <activity android:name="com.lxf.rxjava.RxJavaDemoActivity" />
     </application>
 
 </manifest>
