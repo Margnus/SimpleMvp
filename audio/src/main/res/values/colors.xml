@@ -6,4 +6,5 @@
 
     <color name="bottomSheetNormalBackground">#dddddd</color>
     <color name="white_text">#ffffff</color>
+    <color name="black">#191919</color>
 </resources>

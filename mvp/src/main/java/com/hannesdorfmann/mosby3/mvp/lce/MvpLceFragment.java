@@ -99,7 +99,7 @@ public abstract class MvpLceFragment<CV extends View, M, V extends MvpLceView<M>
   /**
    * Create the loading view. Default is {@code findViewById(R.id.loadingView)}
    *
-   * @param v The main view returned from {@link #onCreateView(LayoutInflater, ViewGroup, * Bundle)}
+   * @param v The main view returned from {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}
    * @return the loading view
    */
   @NonNull protected View createLoadingView(View v) {
@@ -115,7 +115,7 @@ public abstract class MvpLceFragment<CV extends View, M, V extends MvpLceView<M>
   /**
    * Create the content view. Default is {@code findViewById(R.id.contentView)}
    *
-   * @param view The main view returned from {@link #onCreateView(LayoutInflater, ViewGroup, *
+   * @param view The main view returned from {@link #onCreateView(LayoutInflater, ViewGroup,
    * Bundle)}
    * @return the content view
    */
@@ -126,7 +126,7 @@ public abstract class MvpLceFragment<CV extends View, M, V extends MvpLceView<M>
   /**
    * Create the error view. Default is {@code findViewById(R.id.errorView)}
    *
-   * @param view The main view returned from {@link #onCreateView(LayoutInflater, ViewGroup, *
+   * @param view The main view returned from {@link #onCreateView(LayoutInflater, ViewGroup,
    * Bundle)}
    * @return the error view
    */
