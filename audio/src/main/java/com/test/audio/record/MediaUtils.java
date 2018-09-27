@@ -1,5 +1,6 @@
 package com.test.audio.record;
 
+import android.media.AudioFormat;
 import android.media.MediaRecorder;
 import android.util.Log;
 
@@ -60,12 +61,24 @@ public class MediaUtils{
         }
     }
 
+    public static final int DEFAULT_SAMPLE_RATE = 16000;
+    public static final int DEFAULT_BIT_RATE = 16000;
+
     private boolean prepareRecord() {
         try {
             mMediaRecorder = new MediaRecorder();
+            //从麦克风采集
             mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-            mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+            //保存文件为MP4格式
+            mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_WB);
+            //所有android系统都支持的适中采样的频率
+            mMediaRecorder.setAudioSamplingRate(44100);
+            //通用的AAC编码格式
             mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+            //设置音质频率
+            mMediaRecorder.setAudioEncodingBitRate(96000);
+            mMediaRecorder.setAudioChannels(AudioFormat.CHANNEL_IN_MONO);
+
             targetFile = new File(targetDir, targetName);
             mMediaRecorder.setOutputFile(targetFile.getPath());
 

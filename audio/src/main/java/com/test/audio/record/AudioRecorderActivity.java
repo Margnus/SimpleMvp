@@ -1,12 +1,12 @@
 package com.test.audio.record;
 
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -17,29 +17,30 @@ import android.widget.Toast;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.test.audio.R;
 
-import java.util.UUID;
-
 /**
  * Created by wanbo on 2017/1/20.
  */
 @Route(path = "/audio/record")
 public class AudioRecorderActivity extends AppCompatActivity {
 
-    private TextView mic,info;
+    private TextView mic, info;
     private ImageView micIcon;
-    private MediaUtils mediaUtils;
+    //    private MediaUtils mediaUtils;
     private boolean isCancel;
     private Chronometer chronometer;
     private RelativeLayout audioLayout;
     private String duration;
 
+    AudioRecordManager recordManager;
+    private Button btnPlay;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_audio);
-        mediaUtils = new MediaUtils();
-        mediaUtils.setTargetDir(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC));
-        mediaUtils.setTargetName(UUID.randomUUID() + ".m4a");
+
+        initRecord();
         // btn
         mic = (TextView) findViewById(R.id.tv_mic);
         info = (TextView) findViewById(R.id.tv_info);
@@ -48,6 +49,22 @@ public class AudioRecorderActivity extends AppCompatActivity {
         chronometer.setOnChronometerTickListener(tickListener);
         micIcon = (ImageView) findViewById(R.id.mic_icon);
         audioLayout = (RelativeLayout) findViewById(R.id.audio_layout);
+        btnPlay = (Button) findViewById(R.id.tv_play);
+        btnPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                recordManager.startPlayWav();
+            }
+        });
+    }
+
+    private void initRecord() {
+//        mediaUtils = new MediaUtils();
+//        mediaUtils.setTargetDir(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC));
+//        mediaUtils.setTargetName(UUID.randomUUID() + ".m4a");
+
+        AudioRecordManager.init();
+        recordManager = AudioRecordManager.NewInstance();
     }
 
     private View.OnTouchListener touchListener = new View.OnTouchListener() {
@@ -61,14 +78,16 @@ public class AudioRecorderActivity extends AppCompatActivity {
                 switch (action) {
                     case MotionEvent.ACTION_DOWN:
                         startAnim(true);
-                        mediaUtils.record();
+//                        mediaUtils.record();
+                        recordManager.startRecord(true);
                         ret = true;
                         break;
                     case MotionEvent.ACTION_UP:
                         stopAnim();
                         if (isCancel) {
                             isCancel = false;
-                            mediaUtils.stopRecordUnSave();
+//                            mediaUtils.stopRecordUnSave();
+                            recordManager.stopRecord();
                             Toast.makeText(AudioRecorderActivity.this, "取消保存", Toast.LENGTH_SHORT).show();
                         } else {
                             int duration = getDuration(chronometer.getText().toString());
@@ -76,13 +95,15 @@ public class AudioRecorderActivity extends AppCompatActivity {
                                 case -1:
                                     break;
                                 case -2:
-                                    mediaUtils.stopRecordUnSave();
+//                                    mediaUtils.stopRecordUnSave();
+                                    recordManager.stopRecord();
                                     Toast.makeText(AudioRecorderActivity.this, "时间太短", Toast.LENGTH_SHORT).show();
                                     break;
                                 default:
-                                    mediaUtils.stopRecordSave();
-                                    String path = mediaUtils.getTargetFilePath();
-                                    Toast.makeText(AudioRecorderActivity.this, "文件以保存至：" + path, Toast.LENGTH_SHORT).show();
+//                                    mediaUtils.stopRecordSave();
+//                                    String path = mediaUtils.getTargetFilePath();
+                                    recordManager.stopRecord();
+//                                    Toast.makeText(AudioRecorderActivity.this, "文件以保存至：" + path, Toast.LENGTH_SHORT).show();
                                     break;
                             }
                         }
@@ -109,10 +130,11 @@ public class AudioRecorderActivity extends AppCompatActivity {
         public void onChronometerTick(Chronometer chronometer) {
             if (SystemClock.elapsedRealtime() - chronometer.getBase() > 60 * 1000) {
                 stopAnim();
-                mediaUtils.stopRecordSave();
+//                mediaUtils.stopRecordSave();
+                recordManager.stopRecord();
                 Toast.makeText(AudioRecorderActivity.this, "录音超时", Toast.LENGTH_SHORT).show();
-                String path = mediaUtils.getTargetFilePath();
-                Toast.makeText(AudioRecorderActivity.this, "文件以保存至：" + path, Toast.LENGTH_SHORT).show();
+//                String path = mediaUtils.getTargetFilePath();
+//                Toast.makeText(AudioRecorderActivity.this, "文件以保存至：" + path, Toast.LENGTH_SHORT).show();
             }
         }
     };
@@ -139,25 +161,25 @@ public class AudioRecorderActivity extends AppCompatActivity {
 
     }
 
-    private void startAnim(boolean isStart){
+    private void startAnim(boolean isStart) {
         audioLayout.setVisibility(View.VISIBLE);
         info.setText("上滑取消");
         mic.setBackgroundResource(R.drawable.mic_pressed_bg);
         micIcon.setImageResource(R.drawable.ic_mic_white_24dp);
-        if (isStart){
+        if (isStart) {
             chronometer.setBase(SystemClock.elapsedRealtime());
             chronometer.setFormat("%S");
             chronometer.start();
         }
     }
 
-    private void stopAnim(){
+    private void stopAnim() {
         audioLayout.setVisibility(View.GONE);
         mic.setBackgroundResource(R.drawable.mic_bg);
         chronometer.stop();
     }
 
-    private void moveAnim(){
+    private void moveAnim() {
         info.setText("松手取消");
         micIcon.setImageResource(R.drawable.ic_undo_black_24dp);
     }

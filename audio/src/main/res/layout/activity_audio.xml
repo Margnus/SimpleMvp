@@ -43,6 +43,7 @@
 
 
     <LinearLayout
+        android:id="@+id/bottom"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:layout_alignParentBottom="true"
@@ -69,5 +70,13 @@
             android:layout_height="match_parent"/>
 
     </LinearLayout>
+
+
+    <Button
+        android:id="@+id/tv_play"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bottom"
+        android:text="按下播放"/>
 
 </RelativeLayout>
