@@ -3,6 +3,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F7F8FA">
+    <LinearLayout
+        android:id="@+id/bottom"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="50dp"
+            android:layout_height="match_parent"/>
+
+        <TextView
+            android:id="@+id/tv_mic"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:background="@drawable/mic_bg"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:text="按下说话"
+            android:textColor="@color/black"
+            android:textSize="13sp" />
+        <View
+            android:layout_width="50dp"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_above="@+id/bottom"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
     <RelativeLayout
         android:id="@+id/audio_layout"
@@ -40,43 +74,5 @@
             android:textSize="12sp" />
 
     </RelativeLayout>
-
-
-    <LinearLayout
-        android:id="@+id/bottom"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal">
-
-        <View
-            android:layout_width="50dp"
-            android:layout_height="match_parent"/>
-
-        <TextView
-            android:id="@+id/tv_mic"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:background="@drawable/mic_bg"
-            android:layout_margin="8dp"
-            android:gravity="center"
-            android:text="按下说话"
-            android:textColor="@color/black"
-            android:textSize="13sp" />
-        <View
-            android:layout_width="50dp"
-            android:layout_height="match_parent"/>
-
-    </LinearLayout>
-
-
-    <Button
-        android:id="@+id/tv_play"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/bottom"
-        android:text="按下播放"/>
 
 </RelativeLayout>

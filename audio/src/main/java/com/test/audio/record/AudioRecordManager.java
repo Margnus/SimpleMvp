@@ -13,15 +13,20 @@ import android.util.Log;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class AudioRecordManager {
     private static final String TAG = "AudioRecordManager";
     private static final String TMP_FOLDER_NAME = "sunlands";
+    private static final String WAV_SUFFIX = ".wav";
+
     private static final int RECORD_AUDIO_BUFFER_TIMES = 1;
     private static final int PLAY_AUDIO_BUFFER_TIMES = 1;
     private static final int AUDIO_FREQUENCY = 44100;
@@ -101,6 +106,23 @@ public class AudioRecordManager {
         }
     }
 
+    public List<String> getRecords(){
+        File wavDir = new File(wavFolderPath);
+        if (wavDir.exists()) {
+            List<String> records = new ArrayList();
+            for(File file : wavDir.listFiles(new FilenameFilter() {
+                @Override
+                public boolean accept(File dir, String name) {
+                    return name.endsWith(WAV_SUFFIX);
+                }
+            })){
+                records.add(file.getAbsolutePath());
+            }
+            return records;
+        }
+        return null;
+    }
+
     /**
      * 开始录制音频
      */
@@ -113,7 +135,7 @@ public class AudioRecordManager {
             tmpPCMFile = File.createTempFile("recording", ".pcm", new File(cachePCMFolder));
             if (createWav) {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd_HHmmss", Locale.CHINA);
-                tmpWavFile = new File(wavFolderPath + File.separator + "r" + sdf.format(new Date()) + ".wav");
+                tmpWavFile = new File(wavFolderPath + File.separator + "r" + sdf.format(new Date()) + WAV_SUFFIX);
             }
             Log.d(TAG, "tmp file " + tmpPCMFile.getName());
         } catch (IOException e) {
@@ -148,11 +170,11 @@ public class AudioRecordManager {
     /**
      * 播放录制好的wav文件
      */
-    public synchronized void startPlayWav() {
+    public synchronized void startPlayWav(File file) {
         if (!isIdle()) {
             return;
         }
-        new AudioTrackPlayThread(tmpWavFile).start();
+        new AudioTrackPlayThread(file).start();
     }
 
     public synchronized void stopPlay() {

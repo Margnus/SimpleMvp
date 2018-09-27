@@ -4,18 +4,26 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.test.audio.R;
+import com.test.audio.R2;
+
+import java.io.File;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by wanbo on 2017/1/20.
@@ -23,39 +31,39 @@ import com.test.audio.R;
 @Route(path = "/audio/record")
 public class AudioRecorderActivity extends AppCompatActivity {
 
-    private TextView mic, info;
-    private ImageView micIcon;
-    //    private MediaUtils mediaUtils;
+    @BindView(R2.id.tv_mic)
+    TextView tvMic;
+    @BindView(R2.id.bottom)
+    LinearLayout bottom;
+    @BindView(R2.id.recyclerView)
+    RecyclerView recyclerView;
+    @BindView(R2.id.time_display)
+    Chronometer timeDisplay;
+    @BindView(R2.id.mic_icon)
+    ImageView micIcon;
+    @BindView(R2.id.tv_info)
+    TextView tvInfo;
+    @BindView(R2.id.audio_layout)
+    RelativeLayout audioLayout;
+
     private boolean isCancel;
-    private Chronometer chronometer;
-    private RelativeLayout audioLayout;
     private String duration;
 
     AudioRecordManager recordManager;
-    private Button btnPlay;
+
+    AudioRecordAdapter recordAdapter;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_audio);
+        ButterKnife.bind(this);
+
+        tvMic.setOnTouchListener(touchListener);
+        timeDisplay.setOnChronometerTickListener(tickListener);
 
         initRecord();
-        // btn
-        mic = (TextView) findViewById(R.id.tv_mic);
-        info = (TextView) findViewById(R.id.tv_info);
-        mic.setOnTouchListener(touchListener);
-        chronometer = (Chronometer) findViewById(R.id.time_display);
-        chronometer.setOnChronometerTickListener(tickListener);
-        micIcon = (ImageView) findViewById(R.id.mic_icon);
-        audioLayout = (RelativeLayout) findViewById(R.id.audio_layout);
-        btnPlay = (Button) findViewById(R.id.tv_play);
-        btnPlay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                recordManager.startPlayWav();
-            }
-        });
     }
 
     private void initRecord() {
@@ -65,6 +73,26 @@ public class AudioRecorderActivity extends AppCompatActivity {
 
         AudioRecordManager.init();
         recordManager = AudioRecordManager.NewInstance();
+        recordManager.setOnStateListener(new AudioRecordManager.OnState() {
+            @Override
+            public void onStateChanged(AudioRecordManager.WindState currentState) {
+                if(recordAdapter != null){
+                    recordAdapter.setNewData(recordManager.getRecords());
+                }
+            }
+        });
+        recordAdapter = new AudioRecordAdapter();
+        recordAdapter.setNewData(recordManager.getRecords());
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(recordAdapter);
+        recordAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                if(recordAdapter.getData() != null && recordAdapter.getData().size() > position){
+                    recordManager.startPlayWav(new File(recordAdapter.getData().get(position)));
+                }
+            }
+        });
     }
 
     private View.OnTouchListener touchListener = new View.OnTouchListener() {
@@ -90,7 +118,7 @@ public class AudioRecorderActivity extends AppCompatActivity {
                             recordManager.stopRecord();
                             Toast.makeText(AudioRecorderActivity.this, "取消保存", Toast.LENGTH_SHORT).show();
                         } else {
-                            int duration = getDuration(chronometer.getText().toString());
+                            int duration = getDuration(timeDisplay.getText().toString());
                             switch (duration) {
                                 case -1:
                                     break;
@@ -130,11 +158,8 @@ public class AudioRecorderActivity extends AppCompatActivity {
         public void onChronometerTick(Chronometer chronometer) {
             if (SystemClock.elapsedRealtime() - chronometer.getBase() > 60 * 1000) {
                 stopAnim();
-//                mediaUtils.stopRecordSave();
                 recordManager.stopRecord();
                 Toast.makeText(AudioRecorderActivity.this, "录音超时", Toast.LENGTH_SHORT).show();
-//                String path = mediaUtils.getTargetFilePath();
-//                Toast.makeText(AudioRecorderActivity.this, "文件以保存至：" + path, Toast.LENGTH_SHORT).show();
             }
         }
     };
@@ -163,24 +188,24 @@ public class AudioRecorderActivity extends AppCompatActivity {
 
     private void startAnim(boolean isStart) {
         audioLayout.setVisibility(View.VISIBLE);
-        info.setText("上滑取消");
-        mic.setBackgroundResource(R.drawable.mic_pressed_bg);
+        tvInfo.setText("上滑取消");
+        tvMic.setBackgroundResource(R.drawable.mic_pressed_bg);
         micIcon.setImageResource(R.drawable.ic_mic_white_24dp);
         if (isStart) {
-            chronometer.setBase(SystemClock.elapsedRealtime());
-            chronometer.setFormat("%S");
-            chronometer.start();
+            timeDisplay.setBase(SystemClock.elapsedRealtime());
+            timeDisplay.setFormat("%S");
+            timeDisplay.start();
         }
     }
 
     private void stopAnim() {
         audioLayout.setVisibility(View.GONE);
-        mic.setBackgroundResource(R.drawable.mic_bg);
-        chronometer.stop();
+        tvMic.setBackgroundResource(R.drawable.mic_bg);
+        timeDisplay.stop();
     }
 
     private void moveAnim() {
-        info.setText("松手取消");
+        tvInfo.setText("松手取消");
         micIcon.setImageResource(R.drawable.ic_undo_black_24dp);
     }
 }
