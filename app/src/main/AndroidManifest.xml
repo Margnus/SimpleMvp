@@ -9,6 +9,17 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <!--用于进行网络定位-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
+    <!--用于访问GPS定位-->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
+    <!--用于获取wifi的获取权限，wifi信息会用来进行网络定位-->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"></uses-permission>
+    <!--用于申请调用A-GPS模块-->
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"></uses-permission>
+    <!--用于申请获取蓝牙信息进行室内定位-->
+    <uses-permission android:name="android.permission.BLUETOOTH"></uses-permission>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"></uses-permission>
 
     <application
         android:name="com.lxf.mvp.Application"
@@ -33,6 +44,14 @@
         <activity android:name="com.lxf.mvp.test.TestActivity" />
         <activity android:name="com.lxf.mvp.test.TestOrientationActivity"
             android:configChanges="keyboard|orientation|keyboardHidden|screenSize"/>
+        <activity android:name="com.lxf.mvp.location.GaoDeLocationActivity"
+            android:configChanges="keyboard|orientation|keyboardHidden|screenSize"/>
+        <activity android:name="com.lxf.canvas.TestCanvasActivity"/>
+
+        <service android:name="com.amap.api.location.APSService"></service>
+
+        <meta-data android:name="com.amap.api.v2.apikey" android:value="68583ff7f622c8a480e26c219b326918" />
+
     </application>
 
 </manifest>

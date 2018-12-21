@@ -123,9 +123,7 @@ public class BaseMvvmActivity<SV extends ViewDataBinding> extends AppCompatActiv
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (this.mCompositeSubscription != null && !mCompositeSubscription.isDisposed()) {
-            this.mCompositeSubscription.isDisposed();
-        }
+        removeSubscription();
     }
 
     public void removeSubscription() {

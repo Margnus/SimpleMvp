@@ -29,7 +29,7 @@ public class AudioRecordManager {
 
     private static final int RECORD_AUDIO_BUFFER_TIMES = 1;
     private static final int PLAY_AUDIO_BUFFER_TIMES = 1;
-    private static final int AUDIO_FREQUENCY = 44100;
+    private static final int AUDIO_FREQUENCY = 16000;
 
     private static final int RECORD_CHANNEL_CONFIG = AudioFormat.CHANNEL_IN_STEREO;
     private static final int PLAY_CHANNEL_CONFIG = AudioFormat.CHANNEL_OUT_STEREO;
@@ -231,6 +231,7 @@ public class AudioRecordManager {
                     }
                 }
                 aRecord.stop(); // 录制结束
+                aRecord.release();
                 pcmFos.close();
                 wavFos.close();
                 if (createWav) {
@@ -247,6 +248,8 @@ public class AudioRecordManager {
             } catch (Exception e) {
                 Log.e(TAG, "AudioRecordThread:", e);
                 notifyState(WindState.ERROR);
+            }finally {
+
             }
             notifyState(state);
             state = WindState.IDLE;

@@ -1,12 +1,16 @@
 package com.lxf.mvp;
 
+import android.media.ExifInterface;
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
 import android.view.OrientationEventListener;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.bumptech.glide.Glide;
 import com.hannesdorfmann.mosby3.base.BaseActivity;
 import com.lxf.mvp.dagger.AppModule;
 import com.lxf.mvp.imageloader.ImageLoader;
@@ -14,6 +18,9 @@ import com.lxf.mvp.utils.ARouterPaths;
 import com.lxf.mvp.utils.PermissionUtil;
 import com.lxf.mvp.utils.ToastUtil;
 import com.tbruyelle.rxpermissions2.RxPermissions;
+
+import java.io.File;
+import java.io.IOException;
 
 import javax.inject.Inject;
 
@@ -25,6 +32,7 @@ import me.jessyan.rxerrorhandler.handler.listener.ResponseErrorListener;
 
 public class MainActivity extends BaseActivity {
 
+    private static final String TAG = MainActivity.class.getSimpleName();
     @Inject
     ImageLoader imageLoader;
     @BindView(R.id.textView6)
@@ -47,31 +55,18 @@ public class MainActivity extends BaseActivity {
         reqPermission();
 
         initView();
-
+        getExif();
 //        quickSort(arrs, 0, arrs.length - 1);
         System.out.print(arrs.toString());
-        initOrientation();
     }
 
     private void initView() {
-//        imageLoader.with(this)
-//                .load("https://www.baidu.com/img/bd_logo1.png")
-//                .transformation(ImageLoader.TransformationType.ROUND).into(image);
+        imageLoader.with(this)
+                .load("https://www.baidu.com/img/bd_logo1.png")
+                .transformation(ImageLoader.TransformationType.ROUND).into(image);
+
     }
 
-    /**
-     * 手机重力监听
-     */
-    private OrientationEventListener orientationEventListener;
-
-    private void initOrientationEventListener() {
-        orientationEventListener = new OrientationEventListener(this) {
-            @Override
-            public void onOrientationChanged(int orientation) {
-                textView6.setText(orientation + "");
-            }
-        };
-    }
 
     @Override
     protected void injectDependencies() {
@@ -111,6 +106,71 @@ public class MainActivity extends BaseActivity {
                 ToastUtil.show(MainActivity.this, "Request permissons failure");
             }
         }, new RxPermissions(MainActivity.this), mErrorHandler);
+        PermissionUtil.location(new PermissionUtil.RequestPermission() {
+            @Override
+            public void onRequestPermissionSuccess() {
+                //request permission success, do something.
+                ToastUtil.show(MainActivity.this, "Request permissons success");
+            }
+
+            @Override
+            public void onRequestPermissionFailure() {
+                ToastUtil.show(MainActivity.this, "Request permissons failure");
+            }
+        }, new RxPermissions(MainActivity.this), mErrorHandler);
+    }
+
+    private void getExif(){
+        ExifInterface exifInterface = null;
+        String file = Environment.getExternalStorageDirectory().getPath() +  File.separator + "DCIM/Camera/IMG_20181217_180441.jpg";
+//        String file = Environment.getExternalStorageDirectory().getPath() +  File.separator + "DCIM/GalleryFinal/IMG_20181219_153135.jpg";
+        Glide.with(this).load(new File(file)).into(image);
+        try {
+            exifInterface = new ExifInterface(
+                    file);
+            if(exifInterface != null){
+                String FFNumber = exifInterface
+                        .getAttribute(ExifInterface.TAG_APERTURE);
+                String FDateTime = exifInterface
+                        .getAttribute(ExifInterface.TAG_DATETIME);
+                String FExposureTime = exifInterface
+                        .getAttribute(ExifInterface.TAG_EXPOSURE_TIME);
+                String FFlash = exifInterface
+                        .getAttribute(ExifInterface.TAG_FLASH);
+                String FFocalLength = exifInterface
+                        .getAttribute(ExifInterface.TAG_FOCAL_LENGTH);
+                String FImageLength = exifInterface
+                        .getAttribute(ExifInterface.TAG_IMAGE_LENGTH);
+                String FImageWidth = exifInterface
+                        .getAttribute(ExifInterface.TAG_IMAGE_WIDTH);
+                String FISOSpeedRatings = exifInterface
+                        .getAttribute(ExifInterface.TAG_ISO);
+                String FMake = exifInterface
+                        .getAttribute(ExifInterface.TAG_MAKE);
+                String FModel = exifInterface
+                        .getAttribute(ExifInterface.TAG_MODEL);
+                String FOrientation = exifInterface
+                        .getAttribute(ExifInterface.TAG_ORIENTATION);
+                String FWhiteBalance = exifInterface
+                        .getAttribute(ExifInterface.TAG_WHITE_BALANCE);
+
+                Log.i(TAG, "FFNumber:" + FFNumber);
+                Log.i(TAG, "FDateTime:" + FDateTime);
+                Log.i(TAG, "FExposureTime:" + FExposureTime);
+                Log.i(TAG, "FFlash:" + FFlash);
+                Log.i(TAG, "FFocalLength:" + FFocalLength);
+                Log.i(TAG, "FImageLength:" + FImageLength);
+                Log.i(TAG, "FImageWidth:" + FImageWidth);
+                Log.i(TAG, "FISOSpeedRatings:" + FISOSpeedRatings);
+                Log.i(TAG, "FMake:" + FMake);
+                Log.i(TAG, "FModel:" + FModel);
+                Log.i(TAG, "FOrientation:" + FOrientation);
+                Log.i(TAG, "FWhiteBalance:" + FWhiteBalance);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     /**
@@ -134,7 +194,7 @@ public class MainActivity extends BaseActivity {
 //                "com.tencent.mm.ui.tools.ShareToTimeLineUI", fileImage);
     }
 
-    @OnClick({R.id.textView, R.id.textView2, R.id.textView3, R.id.textView4, R.id.textView5, R.id.textView6, R.id.textView7})
+    @OnClick({R.id.textView, R.id.textView2, R.id.textView3, R.id.textView4, R.id.textView5, R.id.textView6, R.id.textView7, R.id.textView8, R.id.textView9})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.textView:
@@ -157,6 +217,12 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.textView7:
                 ARouter.getInstance().build("/audio/record").navigation();
+                break;
+            case R.id.textView8:
+                ARouter.getInstance().build("/scroll/location").navigation();
+                break;
+            case R.id.textView9:
+                ARouter.getInstance().build("/canvas/test").navigation();
                 break;
         }
     }
@@ -192,26 +258,4 @@ public class MainActivity extends BaseActivity {
 
     }
 
-    /**
-     * 设置方向感应监听
-     */
-    private void initOrientation() {
-        if (orientationEventListener == null) {
-            initOrientationEventListener();
-        }
-        if (orientationEventListener.canDetectOrientation()) {
-            orientationEventListener.enable();
-        } else {
-            orientationEventListener.disable();
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (orientationEventListener != null) {
-            orientationEventListener.disable();
-            orientationEventListener = null;
-        }
-    }
 }

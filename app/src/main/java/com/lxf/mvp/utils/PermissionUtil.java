@@ -104,5 +104,12 @@ public class PermissionUtil {
         requestPermission(requestPermission, rxPermissions, errorHandler, Manifest.permission.READ_PHONE_STATE);
     }
 
+    /**
+     * 请求发送短信权限
+     */
+    public static void location(RequestPermission requestPermission, RxPermissions rxPermissions, RxErrorHandler errorHandler) {
+        requestPermission(requestPermission, rxPermissions, errorHandler, Manifest.permission.ACCESS_FINE_LOCATION);
+    }
+
 }
 

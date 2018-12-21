@@ -7,4 +7,9 @@
     <color name="bottomSheetNormalBackground">#dddddd</color>
     <color name="white_text">#ffffff</color>
     <color name="black">#191919</color>
+
+    <color name="RoundColor">#DAF6FE</color>
+    <color name="TimeTextColor">#FF84AD</color>
+    <color name="RoundFillColor">#45C3E5</color>
+    <color name="RoundHintTextColor">#666666</color>
 </resources>

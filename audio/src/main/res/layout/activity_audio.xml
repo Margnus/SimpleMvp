@@ -32,9 +32,17 @@
 
     </LinearLayout>
 
+    <com.test.audio.widget.RecordWaveView
+        android:id="@+id/recordView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_above="@+id/bottom"
+        android:layout_below="@+id/recordView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
