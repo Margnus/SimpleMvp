@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+// 依赖插件脚本
+apply from: 'tinker-support.gradle'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -14,6 +16,11 @@ android {
 
         packagingOptions {
             exclude 'LICENSE.txt'
+        }
+
+        ndk {
+            //设置支持的SO库架构
+            abiFilters 'armeabi' //, 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
         }
 
         javaCompileOptions {
@@ -50,6 +57,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
     }
 
     // dataBinding 加入
@@ -119,4 +133,14 @@ dependencies {
 
     compile 'com.amap.api:location:4.2.0'
     compile 'com.amap.api:map2d:5.2.0'
+
+//    //optional, help to generate the final application
+//    provided('com.tencent.tinker:tinker-android-anno:1.9.9')
+//    //tinker's main Android lib
+//    compile('com.tencent.tinker:tinker-android-lib:1.9.9')
+
+
+
+//    compile 'com.tencent.bugly:nativecrashreport:2.2.0' //其中latest.release指代最新版本号，也可以指定明确的版本号，例如2.2.0
+
 }

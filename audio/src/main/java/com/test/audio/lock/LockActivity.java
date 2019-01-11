@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
@@ -29,16 +30,28 @@ import java.util.Locale;
 /**
  * Created by wm on 2016/12/21.
  */
-public class LockActivity extends LockBaseActivity implements View.OnClickListener{
+public class LockActivity extends LockBaseActivity implements View.OnClickListener {
 
-    private TextView mTime,mDate,mMusicName,mMusicArtsit,mLrc;
-    private ImageView pre,play,next,fav;
-    private Handler mHandler;
+    private TextView mTime, mDate, mMusicName, mMusicArtsit, mLrc;
+    private ImageView pre, play, next, fav;
+    private Handler mHandler = new MyHandler();
     private SildingFinishLayout mView;
     private ImageView mBack;
-//    private PlaylistsManager playlistsManager;
+    //    private PlaylistsManager playlistsManager;
     private boolean isFav;
 //    private List<LrcRow> lrcRows;
+
+    private static class MyHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 12:
+
+                    break;
+            }
+        }
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,11 +87,11 @@ public class LockActivity extends LockBaseActivity implements View.OnClickListen
         mBack = (ImageView) findViewById(R.id.lock_background);
         mView.setOnSildingFinishListener(new SildingFinishLayout.OnSildingFinishListener() {
 
-                    @Override
-                    public void onSildingFinish() {
-                        finish();
-                    }
-                });
+            @Override
+            public void onSildingFinish() {
+                finish();
+            }
+        });
         mView.setTouchView(getWindow().getDecorView());
 //        mHandler = HandlerUtil.getInstance(this);
 //        mHandler.post(updateRunnable);
@@ -92,12 +105,12 @@ public class LockActivity extends LockBaseActivity implements View.OnClickListen
 
     @Override
     protected void onUserLeaveHint() {
-        Log.d("lock","onUserLeaveHint");
+        Log.d("lock", "onUserLeaveHint");
         super.onUserLeaveHint();
 
         Intent intent = new Intent();
         intent.setAction(MusicService.LOCK_SCREEN);
-        intent.putExtra("islock",false);
+        intent.putExtra("islock", false);
         sendBroadcast(intent);
         finish();
     }
@@ -109,7 +122,7 @@ public class LockActivity extends LockBaseActivity implements View.OnClickListen
             String date[] = simpleDateFormat.format(new Date()).split("-");
             mTime.setText(date[0]);
             mDate.setText(date[1]);
-            mHandler.postDelayed(updateRunnable,300);
+            mHandler.postDelayed(updateRunnable, 300);
         }
     };
 
@@ -117,7 +130,7 @@ public class LockActivity extends LockBaseActivity implements View.OnClickListen
     @Override
     protected void onResume() {
         super.onResume();
-        Log.e("lock"," on resume");
+        Log.e("lock", " on resume");
         updateTrackInfo();
         updateTrack();
     }
@@ -125,26 +138,26 @@ public class LockActivity extends LockBaseActivity implements View.OnClickListen
     @Override
     protected void onPause() {
         super.onPause();
-        Log.e("lock"," on pause");
+        Log.e("lock", " on pause");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Log.e("lock"," on stop");
+        Log.e("lock", " on stop");
     }
 
     @Override
     protected void onDestroy() {
         Intent intent = new Intent();
         intent.setAction(MusicService.LOCK_SCREEN);
-        intent.putExtra("islock",false);
+        intent.putExtra("islock", false);
         sendBroadcast(intent);
-        if(mHandler != null){
+        if (mHandler != null) {
             mHandler.removeCallbacks(updateRunnable);
         }
         super.onDestroy();
-        Log.e("lock"," on destroy");
+        Log.e("lock", " on destroy");
 
     }
 
@@ -153,7 +166,7 @@ public class LockActivity extends LockBaseActivity implements View.OnClickListen
         // do nothing
     }
 
-    public void updateTrackInfo(){
+    public void updateTrackInfo() {
 //            mMusicName.setText(MusicPlayer.getTrackName());
 //                mMusicArtsit.setText(MusicPlayer.getArtistName());
 //            isFav = false;
@@ -184,7 +197,7 @@ public class LockActivity extends LockBaseActivity implements View.OnClickListen
 //        }
     }
 
-    public void updateTrack(){
+    public void updateTrack() {
 //        lrcRows = getLrcRows();
 //        String url = MusicPlayer.getAlbumPath();
 //        if (url == null) {

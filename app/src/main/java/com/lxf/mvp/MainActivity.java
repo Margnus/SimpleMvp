@@ -61,9 +61,9 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initView() {
-        imageLoader.with(this)
-                .load("https://www.baidu.com/img/bd_logo1.png")
-                .transformation(ImageLoader.TransformationType.ROUND).into(image);
+//        imageLoader.with(this)
+//                .load("https://www.baidu.com/img/bd_logo1.png")
+//                .transformation(ImageLoader.TransformationType.ROUND).into(image);
 
     }
 
@@ -194,7 +194,7 @@ public class MainActivity extends BaseActivity {
 //                "com.tencent.mm.ui.tools.ShareToTimeLineUI", fileImage);
     }
 
-    @OnClick({R.id.textView, R.id.textView2, R.id.textView3, R.id.textView4, R.id.textView5, R.id.textView6, R.id.textView7, R.id.textView8, R.id.textView9})
+    @OnClick({R.id.textView, R.id.textView2, R.id.textView3, R.id.textView4, R.id.textView5, R.id.textView6, R.id.textView7, R.id.textView8, R.id.textView9, R.id.textView10})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.textView:
@@ -223,6 +223,9 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.textView9:
                 ARouter.getInstance().build("/canvas/test").navigation();
+                break;
+            case R.id.textView10:
+                ToastUtil.show(getBaseContext(), "Tinker!!!");
                 break;
         }
     }

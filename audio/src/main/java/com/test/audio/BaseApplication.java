@@ -1,8 +1,8 @@
 package com.test.audio;
 
-import android.support.multidex.MultiDexApplication;
-
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.tencent.tinker.loader.app.TinkerApplication;
+import com.tencent.tinker.loader.shareutil.ShareConstants;
 import com.test.audio.music.MusicEntity;
 import com.test.audio.service.IMusicControl;
 
@@ -13,9 +13,14 @@ import java.util.List;
  * Created by lixiaofan on 2017/6/27.
  */
 
-public class BaseApplication extends MultiDexApplication {
+public class BaseApplication extends TinkerApplication {
 
     public static BaseApplication application;
+
+    public BaseApplication() {
+        super(ShareConstants.TINKER_ENABLE_ALL, "com.test.audio.SampleApplicationLike",
+                "com.tencent.tinker.loader.TinkerLoader", false);
+    }
 
     @Override
     public void onCreate() {
