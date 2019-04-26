@@ -20,7 +20,7 @@ import com.test.audio.lock.LockActivity;
 
 public class MusicService extends Service {
 
-    public static final String SESSION_TAG = "mSunlandsMusic";
+    public static final String SESSION_TAG = "myMusic";
     public static final String ACTION_PLAY = "play";
     public static final String ACTION_PAUSE = "pause";
     public static final String ACTION_NEXT = "next";

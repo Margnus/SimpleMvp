@@ -24,7 +24,7 @@ import java.util.Locale;
 
 public class AudioRecordManager {
     private static final String TAG = "AudioRecordManager";
-    private static final String TMP_FOLDER_NAME = "sunlands";
+    private static final String TMP_FOLDER_NAME = "lixiaofan";
     private static final String WAV_SUFFIX = ".wav";
 
     private static final int RECORD_AUDIO_BUFFER_TIMES = 1;
