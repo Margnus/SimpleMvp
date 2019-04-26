@@ -194,7 +194,8 @@ public class MainActivity extends BaseActivity {
 //                "com.tencent.mm.ui.tools.ShareToTimeLineUI", fileImage);
     }
 
-    @OnClick({R.id.textView, R.id.textView2, R.id.textView3, R.id.textView4, R.id.textView5, R.id.textView6, R.id.textView7, R.id.textView8, R.id.textView9, R.id.textView10})
+    @OnClick({R.id.textView, R.id.textView2, R.id.textView3, R.id.textView4, R.id.textView5, R.id.textView6,
+            R.id.textView7, R.id.textView8, R.id.textView9, R.id.textView10, R.id.textView11})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.textView:
@@ -226,6 +227,9 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.textView10:
                 ToastUtil.show(getBaseContext(), "Tinker!!!");
+                break;
+            case R.id.textView11:
+                ARouter.getInstance().build("/socket/test").navigation();
                 break;
         }
     }

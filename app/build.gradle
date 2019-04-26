@@ -101,8 +101,6 @@ dependencies {
     })
     compile project(path: ':mvp')
     compile project(path: ':audio')
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
 
     compile 'com.alibaba:arouter-api:1.2.1.1'
     compile 'com.jakewharton:butterknife:8.8.1'

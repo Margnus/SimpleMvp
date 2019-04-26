@@ -47,6 +47,8 @@
         <activity android:name="com.lxf.mvp.location.GaoDeLocationActivity"
             android:configChanges="keyboard|orientation|keyboardHidden|screenSize"/>
         <activity android:name="com.lxf.canvas.TestCanvasActivity"/>
+        <activity android:name="com.lxf.mvp.SocketTestActivity"
+            android:configChanges="keyboard|orientation|keyboardHidden|screenSize"/>
 
         <service android:name="com.amap.api.location.APSService"></service>
 

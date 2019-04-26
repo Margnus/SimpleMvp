@@ -50,7 +50,7 @@
         android:id="@+id/audio_layout"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:visibility="gone"
+        android:visibility="visible"
         android:background="@drawable/mic_bg"
         android:layout_centerInParent="true">
 
