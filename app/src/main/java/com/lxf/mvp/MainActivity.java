@@ -1,5 +1,6 @@
 package com.lxf.mvp;
 
+import android.content.Intent;
 import android.media.ExifInterface;
 import android.os.Bundle;
 import android.os.Environment;
@@ -17,6 +18,7 @@ import com.lxf.mvp.imageloader.ImageLoader;
 import com.lxf.mvp.utils.ARouterPaths;
 import com.lxf.mvp.utils.PermissionUtil;
 import com.lxf.mvp.utils.ToastUtil;
+import com.lxf.web.WebActivity;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.io.File;
@@ -118,6 +120,18 @@ public class MainActivity extends BaseActivity {
                 ToastUtil.show(MainActivity.this, "Request permissons failure");
             }
         }, new RxPermissions(MainActivity.this), mErrorHandler);
+        PermissionUtil.launchCamera(new PermissionUtil.RequestPermission() {
+            @Override
+            public void onRequestPermissionSuccess() {
+                //request permission success, do something.
+                ToastUtil.show(MainActivity.this, "Request permissons success");
+            }
+
+            @Override
+            public void onRequestPermissionFailure() {
+                ToastUtil.show(MainActivity.this, "Request permissons failure");
+            }
+        }, new RxPermissions(MainActivity.this), mErrorHandler);
     }
 
     private void getExif(){
@@ -195,7 +209,7 @@ public class MainActivity extends BaseActivity {
     }
 
     @OnClick({R.id.textView, R.id.textView2, R.id.textView3, R.id.textView4, R.id.textView5, R.id.textView6,
-            R.id.textView7, R.id.textView8, R.id.textView9, R.id.textView10, R.id.textView11})
+            R.id.textView7, R.id.textView8, R.id.textView9, R.id.textView10, R.id.textView11, R.id.textView12})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.textView:
@@ -230,6 +244,10 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.textView11:
                 ARouter.getInstance().build("/socket/test").navigation();
+                break;
+            case R.id.textView12:
+                reqPermission();
+                startActivity(new Intent(this, WebActivity.class));
                 break;
         }
     }

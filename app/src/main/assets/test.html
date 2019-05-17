@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>录音上传</title>
+    <style type="text/css">
+    .record {
+      text-align: center;
+      padding-top: 100px;
+    }
+
+    .btn {
+      margin-bottom: 20px;
+    }
+    .input {
+      margin-bottom: 20px;
+    }
+    button {
+      margin-left: 20px;
+      outline: none;
+    }
+
+    </style>
+</head>
+<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+
+<body>
+<div class="record">
+    <div class="btn">
+        <button id="btnStart">开始录音</button>
+        <button id="btnEnd">结束录音</button>
+    </div>
+    <div class="time">
+        计时:<span id="countTime"> 0 </span>
+    </div>
+    <div class="input">
+        <input type="file" accept="image/*" capture="camera">
+    </div>
+</div>
+</body>
+<script>
+  $(function () {
+    // 记时
+    var countTime = 0;
+
+    // 定时器
+    var inter = null;
+
+    // 开始录音
+    $('#btnStart').click(function () {
+      if (typeof window.JSBridge === "undefined") {
+        alert("不支持录音功能");
+        return;
+      }
+      // 开始录音
+      var action = "startRecord";
+      var callback = {
+        onRecordStop: "onRecordStop",
+        onRecordError: "onRecordError"
+      };
+      var data = {};
+      window.JSBridge.doAction(
+        action,
+        JSON.stringify(callback),
+        JSON.stringify(data)
+      );
+      inter = setInterval(function () {
+        countTime += 1
+        $('#countTime').text(countTime);
+      }, 1000)
+    })
+
+
+    // 结束录音
+    $('#btnEnd').click(function () {
+      countTime = 0;
+      $('#countTime').text(countTime)
+      clearInterval(inter)
+      // 结束录音
+      const action = "stopRecord";
+      const callback = {};
+      const data = {};
+      window.JSBridge.doAction(
+        action,
+        JSON.stringify(callback),
+        JSON.stringify(data)
+      );
+    })
+
+
+    // 录音结束回调
+    window.onRecordStop = function (res) {
+    var obj = JSON.parse(res);
+      // 录音停止返回base64，app端上传开始
+      var action = "uploadRecord";
+      var callback = {
+        "onUploadSuccess": "onUploadSuccess",
+        "onUploadError": "onUploadError"
+      };
+      var data = {
+        "url": "http://el-fec.supplus.cn/cv1/open/upload",
+        "record_file_name": obj.record_file_name
+      };
+      window.JSBridge.doAction(
+        action,
+        JSON.stringify(callback),
+        JSON.stringify(data)
+      );
+    };
+
+    // 录音失败
+    window.onRecordError = function (res) {
+      console.log("录音失败" + res);
+      alert(res)
+    };
+
+    // app端上传成功
+    window.onUploadSuccess = function (res) {
+      console.log("app端上传成功" + res);
+      alert(res)
+    };
+
+    // app端上传失败
+    window.onUploadError = function (res) {
+      console.log("app端上传失败" + res);
+      alert(res)
+    };
+  })
+
+</script>
+
+</html>
